@@ -148,7 +148,7 @@ most_commons <- function(x) {
 #'
 #' @examples
 remove_last <- function(x,
-                        n) {
+                        n = 1) {
   length(x) <- length(x) - n
   x
 }
