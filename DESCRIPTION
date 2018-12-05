@@ -10,9 +10,9 @@ LazyData: true
 LinkingTo: 
     RcppArmadillo (>= 0.9.200.5.0),
     RcppEigen (>= 0.3.3.5.0),
-    Rcpp
+    Rcpp (>= 1.0.0)
 Imports: 
-    Rcpp,
+    Rcpp (>= 1.0.0),
     magrittr (>= 1.5),
     dplyr (>= 0.7.8),
     tidyr (>= 0.8.2),
