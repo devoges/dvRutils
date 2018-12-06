@@ -4,7 +4,7 @@
 \alias{remove_last}
 \title{remove_last}
 \usage{
-remove_last(x, n)
+remove_last(x, n = 1)
 }
 \arguments{
 \item{x}{vector}

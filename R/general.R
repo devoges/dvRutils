@@ -152,3 +152,33 @@ remove_last <- function(x,
   length(x) <- length(x) - n
   x
 }
+
+
+#' %==%
+#'
+#' @param x numeric vector
+#' @param y numeric vector
+#'
+#' @return test for numeric equality, within error
+#' @export
+`%==%` <- function(x, y, epsilon = .Machine$double.eps) {
+  all(abs(x - y) <= epsilon)
+}
+
+#' remove_intercept
+#'
+#' @param x matrix or data.frame
+#'
+#' @return If there is an intercept column (all 1s), it is removed
+#' @export
+remove_intercept <- function(x) {
+  n <- x %>% nrow
+  p <- x %>% ncol
+  intercept <- 1 %>% rep(n)
+
+  test <- lapply(1:p, function(i) {
+    x[, i] %==% intercept
+  }) %>% unlist() %>% which
+
+  x[, -test]
+}
