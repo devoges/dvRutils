@@ -113,8 +113,8 @@ library_many <- function(...) {
   if ( length(try_install) > 0 ) names(try_install) <- bad
 
   if ( length(good) > 0 )  message(paste("Loaded:", paste(good, collapse = ", ")))
-  if ( length(which(try_install)) > 0) message(paste("Loaded (and installed):", paste(names(which(try_install)), collapse = ", ")))
-  if ( length(which(!try_install)) > 0) message(paste("NOT Loaded (can't find on CRAN or BioConductor):", paste(names(which(!try_install)), collapse = ", ")))
+  if ( length(try_install == TRUE ) > 0) message(paste("Loaded (and installed):", paste(names(which(try_install)), collapse = ", ")))
+  if ( length(try_install == FALSE) > 0) message(paste("NOT Loaded (can't find on CRAN or BioConductor):", paste(names(which(!try_install)), collapse = ", ")))
 }
 
 #' clear
