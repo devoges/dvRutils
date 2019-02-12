@@ -73,8 +73,11 @@ library_many <- function(...) {
   }))
   names(try) <- packages
 
-  good <- names(which(try))
-  bad <- names(which(!try))
+  good <- c()
+  bad <- c()
+
+  if ( length(which(try)) > 0 ) good <- names(which(try))
+  if ( length(which(!try))) bad <- names(which(!try))
 
   try_install <- unlist(lapply(bad, function(package) {
     message(paste0("Couldn't find ", package, ", trying to install"))
@@ -106,7 +109,8 @@ library_many <- function(...) {
                              character.only = TRUE,
                              quietly = TRUE))
   }))
-  names(try_install) <- bad
+
+  if ( length(try_install) > 0 ) names(try_install) <- bad
 
   if ( length(good) > 0 )  message(paste("Loaded:", paste(good, collapse = ", ")))
   if ( length(which(try_install)) > 0) message(paste("Loaded (and installed):", paste(names(which(try_install)), collapse = ", ")))
