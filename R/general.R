@@ -69,7 +69,7 @@ library_many <- function(...) {
   packages <- as.character(match.call(expand.dots = FALSE)[[2]])
 
   try <- unlist(lapply(packages, function(package) {
-    suppressWarnings(require(package, character.only = TRUE, quietly = TRUE))
+    suppressWarnings(require(package, character.only = TRUE, quietly = TRUE, warn.conflicts = FALSE))
   }))
   names(try) <- packages
 
@@ -77,40 +77,41 @@ library_many <- function(...) {
   bad <- names(which(!try))
 
   try_install <- unlist(lapply(bad, function(package) {
+    message(paste0("Couldn't find ", package, ", trying to install"))
     suppressWarnings(install.packages(package,
-                                      dependencies = TRUE))
+                                      dependencies = TRUE,
+                                      verbose = FALSE,
+                                      quiet = TRUE))
     ok <- suppressWarnings(require(package,
                                    character.only = TRUE,
                                    quietly = TRUE))
 
     if ( !ok ) {
-      #message(paste(package, "not found on CRAN. Trying Bioconductor"))
 
-      if ( !require("BiocManager", quietly = TRUE) ) {
+      if ( !require("BiocManager", quietly = TRUE, character.only = TRUE) ) {
         install.packages("BiocManager")
       }
 
-      suppressWarnings(BiocManager::install(package,
-                                            update = FALSE,
-                                            ask = FALSE,
-                                            dependencies = TRUE))
+      message("### Bioconductor will not try to install silently! ###")
+      suppressWarnings(suppressWarnings(BiocManager::install(package,
+                                                             update = FALSE,
+                                                             ask = FALSE,
+                                                             dependencies = TRUE,
+                                                             quietly = TRUE,
+                                                             verbose = FALSE)))
+      message("### it is annoying ###")
     }
 
-    suppressWarnings(require(package, character.only = TRUE, quietly = TRUE))
+    suppressWarnings(require(package,
+                             character.only = TRUE,
+                             quietly = TRUE))
   }))
   names(try_install) <- bad
 
   if ( length(good) > 0 )  message(paste("Loaded:", paste(good, collapse = ", ")))
-  if ()
-  message(paste("Loaded (and installed from CRAN):", paste(good, collapse = ", ")))
-  message(paste("Loaded (and installed from BioConductor):", paste(names(which(try_install)), collapse = ", ")))
-  message(paste("NOT Loaded (can't find on CRAN or BioConductor):", paste(names(which(!try_install)), collapse = ", ")))
+  if ( length(which(try_install)) > 0) message(paste("Loaded (and installed):", paste(names(which(try_install)), collapse = ", ")))
+  if ( length(which(!try_install)) > 0) message(paste("NOT Loaded (can't find on CRAN or BioConductor):", paste(names(which(!try_install)), collapse = ", ")))
 }
-
-packages <- c("dplyr", "magrittr", "sSeq", "tacobell")
-
-debug(library_many)
-library_many(dplyr, magrittr, sSeq, tacobell)
 
 #' clear
 #'
