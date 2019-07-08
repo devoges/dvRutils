@@ -3,9 +3,6 @@
 \name{\%==\%}
 \alias{\%==\%}
 \title{%==%}
-\usage{
-x \%==\% y
-}
 \arguments{
 \item{x}{numeric vector}
 
