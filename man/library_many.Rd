@@ -4,7 +4,7 @@
 \alias{library_many}
 \title{library_many}
 \usage{
-library_many(x)
+library_many(...)
 }
 \arguments{
 \item{x}{character vector of packages to load}
